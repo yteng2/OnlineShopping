@@ -1,15 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import = "shopping.bean.User" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>RJT Compuquest Online Shopping</title>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -21,7 +19,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="./">RJT Compuquest</a>
+    <a class="navbar-brand" href="./header">RJT Compuquest</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
@@ -33,13 +31,13 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Categories <b class="caret"></b></a>
         <ul class="dropdown-menu">
         	<c:forEach var = "category" items = "${ categories }">
-        	<li>${category}</li>
+        	<li><a href="./search:${ category }">${category}</a></li>
         	</c:forEach>
-          <li><a href="#">${categorys[0]}</a></li>
+<%--           <li><a href="#">${categories[0]}</a></li>
           <li><a href="#">Another action</a></li>
           <li><a href="#">Something else here</a></li>
           <li><a href="#">Separated link</a></li>
-          <li><a href="#">One more separated link</a></li>
+          <li><a href="#">One more separated link</a></li> --%>
         </ul>
       </li>
     </ul>
@@ -54,20 +52,26 @@
         </form>
     </div>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="./login_register">Login</a></li>
+	<%User user1 =	(User)session.getAttribute("user");%>
+    	<input type = "hidden" id = "user1" value = <%= user1 %>/>
+      <li><a href="./login_register"  onclick="test()">LOGIN</a></li>
+      <c:set var="user" value = "${sessionScope.user}" />
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" ><%=user1 %>${sessionScope.user eq null ? 'temp' : user.getLastName()}<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="#">Change Password</a></li>
           <li><a href="#">Update Profile</a></li>
           <li><a href="#">Manage Address</a></li>
           <li class="divider"></li>
-          <li><a href="#">Log Out</a></li>
+          <li><a href="./logOut">Log Out</a></li>
         </ul>
       </li>
-      <li><a href="#">Cart</a></li>
+      <li><a href="./cart">Cart : ${ cart.size() }</a></li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </nav>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 </body>
 </html>

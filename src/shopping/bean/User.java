@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -29,9 +31,10 @@ public class User {
 	String email;
 	@Column
 	String phone;
-	@OrderColumn
-	@ElementCollection
-	List<Integer> cart;
+	
+	@OneToMany
+	@JoinColumn(name = "user_id")
+	List<CartItem> cart;
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
@@ -47,7 +50,7 @@ public class User {
 	}
 
 	public User(int id, String password, String firstName, String lastName, String email, String phone,
-			ArrayList<Integer> cart) {
+			List<CartItem> cart) {
 		super();
 		this.id = id;
 		this.password = password;
@@ -58,11 +61,11 @@ public class User {
 		this.cart = cart;
 	}
 
-	public List<Integer> getCart() {
+	public List<CartItem> getCart() {
 		return cart;
 	}
 
-	public void setCart(List<Integer> cart) {
+	public void setCart(List<CartItem> cart) {
 		this.cart = cart;
 	}
 

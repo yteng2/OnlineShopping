@@ -7,14 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<jsp:include page="${request.contextPath}/header"></jsp:include>
-<div class = "row">
-	<div class = "col-md-9">
-	item list
-	</div>
-	<div class = "col-md-3">
-	check out
-	</div>
-</div>
+<h1>Name = ${ item.getName() }</h1>
+<img src="/OnlineShopping/image = ${item.getId()}"/>
+<p>Price = ${ item.getPrice() }</p>
 </body>
 </html>

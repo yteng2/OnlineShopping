@@ -5,19 +5,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-
-<%-- <script src="<c:url value="/resources/js/Login_Register.js" />"></script> --%>
-<%-- <link href="<c:url value="/resources/css/Login_Register.css" />" rel="stylesheet"> --%>
-<script src="${pageContext.request.contextPath}/resources/js/Login_Register.js"></script>
-<link href="${pageContext.request.contextPath}/resources/css/Login_Register.css" rel="stylesheet" >
-<!-- <script src="../../resources/js/Login_Register.js"></script>
-<link href="../../resources/css/Login_Register.css" rel="stylesheet"/> -->
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
 </head>
 <body>
+<jsp:include page="${request.contextPath}/header"></jsp:include>
+<link href="${pageContext.request.contextPath}/resources/css/Login_Register.css" rel="stylesheet" >
 <div class="container">
     	<div class="row">
 			<div class="col-md-6 col-md-offset-3">
@@ -36,7 +29,7 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<form id="login-form" action="./login" modelAttribute="user" method="get" role="form" style="display: block;">
+								<form id="login-form" action="./login" modelAttribute="user" method="post" role="form" style="display: block;">
 									<div class="form-group">
 										<input type="text" name="email" id="username" class="form-control" placeholder="Username" >
 									</div>
@@ -98,5 +91,8 @@
 			</div>
 		</div>
 	</div>
+
+<script src="${pageContext.request.contextPath}/resources/js/Login_Register.js"></script>
+
 </body>
 </html>
