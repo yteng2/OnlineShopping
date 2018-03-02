@@ -13,4 +13,17 @@ $(function() {
 		$(this).addClass('active');
 		e.preventDefault();
 	});
+	
+	$('[name="user_email"]').change(function(){
+		var email = $(this).val();
+//		console.log(email);
+		var url = "/OnlineShopping/check_email";
+		var result = $.post(url,email,'json').done(function(response){
+		    if(response === "false"){
+		    	alert("this email is already been used")
+		    }
+		  });
+	});
 });
+
+

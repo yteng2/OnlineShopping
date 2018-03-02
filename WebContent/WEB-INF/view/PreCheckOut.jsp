@@ -10,11 +10,9 @@
 </head>
 <body>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
-
-	<c:if test = '${user.getCart().size() > 0}'>
 	<div class = "container">
 		<div class = "row table table-hover">
-			<div class = "col-md-10">
+			<div class = "col-md-12">
 			<c:set var="total" value="${0}"/>
 			<c:forEach var = "item" items = "${ user.getCart() }" varStatus="loop">
 				<div class = 'row'>
@@ -29,44 +27,29 @@
 					</a>
 					
 					<div class = "col-md-10">
-						<label><spring:message code="label.amount"/></label>
-						<select name = 'amount' onchange="change(${loop.index})">
-							<c:forEach begin="1" end="10" varStatus="loop2">
-		
-								<option ${item.getAmount() == loop2.index ? 'selected' : ''}> ${ loop2.index }</option>
-		
-							</c:forEach>
-						</select>
+						<label><spring:message code="label.amount"/> ${ item.getAmount() }</label>
 						<label><spring:message code="label.price"/>: $ </label>
 						<label>${item.getItem().getPrice()*item.getAmount() }</label>
 						<c:set var="total" value="${total + item.getItem().getPrice()*item.getAmount()}" />
-						<button class = "btn btn-danger btn-xs" onclick ="deleteItem(${loop.index})" style="float: right;"><spring:message code="label.remove"/></button>
 					</div>
 					
 				</div>
 			
 			</c:forEach>
+			<br>
+			<br>
+			<br>
 			</div>
-			
-			<div class = "col-md-2" style = 'align-items: center;justify-content: center;'>
-				<br>
-				<br>
-				<label><spring:message code="label.price"/>: $ ${ total } </label>
-
-				<br>
-				<br>
-				<a href = "./pre_check_out" class = 'btn-lg btn-warning'><spring:message code="label.check_out"/></a>
-				<br>
-				<br>
-				
-			</div>
+				<div class = "col-md-2">
+					<label> <spring:message code="label.total"/> $ ${ total }</label>
+				</div>
+				<div class = "col-md-5">
+					<a href = "./cart" class = "btn btn-info btn-block"><spring:message code="label.back"/></a>
+				</div>
+				<div class = "col-md-5">
+					<a href = "./check" class = "btn btn-warning btn-block"><spring:message code="label.confirm"/></a>
+				</div>
 		</div>
 	</div>
-	</c:if>
-	<c:if test = '${ user.getCart().size() == 0 }'>
-	<h3><spring:message code="label.empty"/></h3>
-	</c:if>
-
-<script src="${pageContext.request.contextPath}/resources/js/Shopping_Cart.js" type="text/javascript"></script>
 </body>
 </html>

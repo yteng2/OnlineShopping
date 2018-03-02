@@ -30,10 +30,12 @@ public class UserDaoHT implements UserDao {
 	}
 
 	@Override
+	@Transactional
 	public void update(User user) {
 		ht.update(user);
 	}
-
+	
+	
 	@Override
 	@Transactional
 	public User get(String userName, String password) {
@@ -44,6 +46,20 @@ public class UserDaoHT implements UserDao {
 		if(result.isEmpty())
 			return null;
 		return result.get(0);
+	}
+
+	@Override
+	@Transactional
+	public void saveorupdate(User user) {
+		ht.saveOrUpdate(user);
+		
+	}
+
+	@Override
+	public boolean checkEmail(String email) {
+		String query = "from User where email = ?";
+		boolean result = ht.find(query, email).isEmpty();
+		return result;
 	}
 
 

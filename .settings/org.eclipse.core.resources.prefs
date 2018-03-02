@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/view/header.jsp=UTF-8
+encoding//WebContent/resources/config_cn.properties=UTF-8
+encoding//WebContent/resources/config_en.properties=UTF-8
 encoding//src/helper/ItemAdder.java=UTF-8

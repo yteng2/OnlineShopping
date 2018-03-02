@@ -13,6 +13,8 @@ public interface UserDao {
 	abstract boolean save(User user);
 	abstract void update(User user);
 	abstract User get(String userName,String password);
+	abstract void saveorupdate(User user);
+	abstract boolean checkEmail(String email);
 	//ArrayList<Item> getCart(ArrayList<Integer> id);
 
 

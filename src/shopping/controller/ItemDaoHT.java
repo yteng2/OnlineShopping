@@ -8,6 +8,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import shopping.bean.CartItem;
 import shopping.bean.Item;
 
 @Service
@@ -36,6 +37,18 @@ public class ItemDaoHT implements ItemDao {
 	@Transactional
 	public ArrayList<Item> findCriteria(DetachedCriteria criteria){
 		return (ArrayList<Item>) ht.findByCriteria(criteria);
+	}
+
+	@Override
+	@Transactional
+	public void saveItem(CartItem ci) {
+		ht.save(ci);
+	}
+	
+	@Override
+	@Transactional
+	public void saveUpdateItem(CartItem ci) {
+		ht.saveOrUpdate(ci);
 	}
 
 }
