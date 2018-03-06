@@ -28,6 +28,10 @@ public class CartItem {
 		this.item = item;
 		this.amount = amount;
 	}
+	public CartItem(Item item2, int i) {
+		this.item = item2;
+		this.amount = i;
+	}
 	@Override
 	public String toString() {
 		return "CartItem [id=" + id + ", item=" + item + ", amount=" + amount + "]";

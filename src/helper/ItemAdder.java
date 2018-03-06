@@ -14,27 +14,32 @@ public class ItemAdder {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String name = "Dell - Inspiron 15.6\" Laptop - Intel Core i5 - 8GB Memory - NVIDIA GeForce GTX 1050 Ti - 256GB Solid State Drive - Black";
-		String detal = "Windows 10 operating system\r\n" + 
-				"Windows 10 brings back the Start Menu from Windows 7 and introduces new features, like the Edge Web browser that lets you markup Web pages on your screen. Learn more ›\r\n" + 
+		String name = "Razer - BlackWidow Chroma V2 Tournament Edition USB Gaming Keyboard - Black";
+		String detal = "87 keys\r\n" + 
+				"Offer a comfortable typing experience.\r\n" + 
 				"\r\n" + 
-				"15.6\" Full HD display\r\n" + 
-				"The 1920 x 1080 resolution boasts impressive color and clarity. IPS technology for wide viewing angles. Energy-efficient LED backlight.\r\n" + 
+				"Multimedia controls\r\n" + 
+				"Promote simple operation.\r\n" + 
 				"\r\n" + 
-				"7th Gen Intel® Core™ i5-7300HQ mobile processor\r\n" + 
-				"Smart quad-core processing performance. Intel Turbo Boost Technology delivers dynamic extra power when you need it, while increasing energy efficiency when you don't.\r\n" + 
+				"Razer Mechanical switches\r\n" + 
+				"Offer rapid response times for quick in-game action.\r\n" + 
 				"\r\n" + 
-				"8GB system memory for advanced multitasking\r\n" + 
-				"Substantial high-bandwidth RAM to smoothly run your games and photo- and video-editing applications, as well as multiple programs and browser tabs all at once.\r\n" + 
+				"Programmable keys\r\n" + 
+				"Enable you to reassign keys for enhanced gaming.\r\n" + 
 				"\r\n" + 
-				"256GB solid state drive (SSD)\r\n" + 
-				"While offering less storage space than a hard drive, a flash-based SSD has no moving parts, resulting in faster start-up times and data access, no noise, and reduced heat production and power draw on the battery.\r\n" + 
+				"Integrated numeric keypad\r\n" + 
+				"Allows simple data entry when you're not gaming for multifunction use.\r\n" + 
 				"\r\n" + 
-				"NVIDIA GeForce GTX 1050 Ti graphics\r\n" + 
-				"Backed by 4GB GDDR5 dedicated video memory for a fast, advanced GPU to fuel your games.";
-				
-		Item i1 = new Item(0,name,699.99,10,"computer,laptop",detal);
-		File file = new File("laptop5.jpg");
+				"USB interface\r\n" + 
+				"Enables a simple wired connection to your computer.\r\n" + 
+				"\r\n" + 
+				"Palm rest\r\n" + 
+				"For comfortable use.\r\n" + 
+				"\r\n" + 
+				"PC and Mac compatible\r\n" + 
+				"For use with your existing computer." ;				
+		Item i1 = new Item(0,name,139.99,10,"accessory,electronic,keyboard",detal);
+		File file = new File("keyboard.jpg");
 		byte[] bFile = new byte[(int) file.length()];	 
         try {
             FileInputStream fileInputStream = new FileInputStream(file);

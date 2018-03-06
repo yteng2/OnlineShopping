@@ -12,8 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import org.springframework.lang.NonNull;
 
 @Entity
 @Table(name = "shopping_user")
@@ -21,16 +27,31 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
-	@Column
+
+	@NotBlank
+	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,15}$", message = "you password must contain at lease"
+			+ "one lower case letter, one higher case letter and one number. you password must longer than 4 and short than 15.")
 	String password;
-	@Column
+
+	@NotBlank
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "first name can only contain letters")
 	String firstName;
-	@Column
+
+	@NotBlank
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "lase name can only contain letters")
 	String lastName;
-	@Column
+
+	@NotBlank
+	@Email
+//	@Pattern(regexp = "[\\w-]+@([\\w-]+\\.)+[\\w-]+", message = "this should be a email address, you have to follow this pattern: xxx@xxx.xxx")
 	String email;
-	@Column
+	
+	@Pattern(regexp = "[0-9]+{10}", message = "phone number can only contain numbers and must have 10 digit")
 	String phone;
+	
+	@OneToOne
+	@JoinColumn(name = "address_id")
+	Address address;
 	
 	@OneToMany
 	@JoinColumn(name = "user_id")
@@ -47,6 +68,27 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.phone = phone;
+	}
+	
+	public User(int id, String password, String firstName, String lastName, String email, String phone, Address address,
+			List<CartItem> cart) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.cart = cart;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public User(int id, String password, String firstName, String lastName, String email, String phone,
@@ -72,7 +114,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", phone=" + phone + ", cart=" + cart + "]";
+				+ ", email=" + email + ", phone=" + phone + ", address=" + address + ", cart=" + cart + "]";
 	}
 
 	public int getId() {

@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Name = ${ item.getName() }</h1>
-<img src="/OnlineShopping/image = ${item.getId()}"/>
-<p>Price = ${ item.getPrice() }</p>
+
 </body>
 </html>

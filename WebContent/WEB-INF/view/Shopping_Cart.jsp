@@ -17,7 +17,7 @@
 			<div class = "col-md-10">
 			<c:set var="total" value="${0}"/>
 			<c:forEach var = "item" items = "${ user.getCart() }" varStatus="loop">
-				<div class = 'row'>
+				<div class = 'row' id = '${loop.index}'>
 					<a href = './item_big_id = ${item.getItem().getId()}'>
 					<div class="col-md-2">
 						<img src="/OnlineShopping/image = ${item.getItem().getId()}" class = "img-responsive"/>
@@ -27,32 +27,32 @@
 						<h5>${ item.getItem().getName() }</h5>
 					</div>
 					</a>
-					
+					<input type = "hidden" id = "price_${loop.index}" value = "${ item.getItem().getPrice() }">
 					<div class = "col-md-10">
 						<label><spring:message code="label.amount"/></label>
-						<select name = 'amount' onchange="change(${loop.index})">
-							<c:forEach begin="1" end="10" varStatus="loop2">
+						<select id = 'amount_${ loop.index }' onchange="change(${loop.index})">
+							<c:forEach begin="1" end="${ item.getItem().getStock() }" varStatus="loop2">
 		
 								<option ${item.getAmount() == loop2.index ? 'selected' : ''}> ${ loop2.index }</option>
 		
 							</c:forEach>
 						</select>
 						<label><spring:message code="label.price"/>: $ </label>
-						<label>${item.getItem().getPrice()*item.getAmount() }</label>
+						<label id = "curprice_${loop.index}">${item.getItem().getPrice()*item.getAmount() }</label>
 						<c:set var="total" value="${total + item.getItem().getPrice()*item.getAmount()}" />
 						<button class = "btn btn-danger btn-xs" onclick ="deleteItem(${loop.index})" style="float: right;"><spring:message code="label.remove"/></button>
 					</div>
 					
 				</div>
-			
+				<hr>
 			</c:forEach>
 			</div>
 			
-			<div class = "col-md-2" style = 'align-items: center;justify-content: center;'>
+			<div class = "col-md-2 well  well-sm " style = 'text-align: center; padding-top: 50px; padding-bottom: 50px;'>
 				<br>
 				<br>
-				<label><spring:message code="label.price"/>: $ ${ total } </label>
-
+				<label><spring:message code="label.price"/>: $  </label>
+				<label id = "total">${ total }</label>
 				<br>
 				<br>
 				<a href = "./pre_check_out" class = 'btn-lg btn-warning'><spring:message code="label.check_out"/></a>

@@ -11,6 +11,8 @@ public interface ItemDao {
 	Item getItem(int id);
 	void saveItem(CartItem ci);
 	ArrayList<Item> search(String query, Object[] obj);
+	ArrayList<Item> search();
 	ArrayList<Item> findCriteria(DetachedCriteria criteria);
 	void saveUpdateItem(CartItem ci);
+	void saveUpdateItem(Item i);
 }

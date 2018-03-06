@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -37,6 +38,13 @@ public class ItemController {
 	
 	public ItemController() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@RequestMapping(value = "/")
+	public String home(Model model) {
+		ArrayList<Item> searchResult = ht.search();
+		model.addAttribute("searchResult",searchResult);
+		return "Home";
 	}
 	
 	@RequestMapping(value="/search: category = {category}")  
@@ -92,7 +100,7 @@ public class ItemController {
 //		Item item = ((ArrayList<Item>) request.getSession().getAttribute("partResult")).get(index);
 //		if(item == null)
 		Item item = ht.getItem(index);
-		System.out.println(item.getDetail());
+//		System.out.println(item.getDetail());
 //		Item item = ((ArrayList<Item>) request.getSession().getAttribute("partResult")).get(itemId);
 		model.addAttribute("item",item);
 		model.addAttribute("itemIndex",index);
@@ -115,12 +123,20 @@ public class ItemController {
 	    response.getOutputStream().close();
 	}
 	
-	@RequestMapping(value = "/addItem id = {index}, amount = {amount}")
-	public String addItem(@PathVariable("index") Integer index,@PathVariable("amount") Integer amount,
+	@RequestMapping(value = "/addItem id = {index}")
+	public String addItem(@PathVariable("index") Integer index,@RequestParam(value = "amount", required = false) Integer amount,
 			HttpServletRequest request,Model model) {
+//		int amount = Integer.valueOf(request.getParameter("amount")); 
+		System.out.println(amount);
+		if(amount == null)
+			amount = 1;
 		HttpSession session = request.getSession();
-		Item item = ((ArrayList<Item>) session.getAttribute("partResult")).get(index);
-		System.out.println(item);
+		Item item;
+		if(index < 5)
+			item = ((ArrayList<Item>) session.getAttribute("partResult")).get(index);
+		else
+			item = ht.getItem(index);
+//		System.out.println(item);
 		model.addAttribute("item", item);
 		User user = (User) session.getAttribute("user");
 //		System.out.println(user);
@@ -136,7 +152,7 @@ public class ItemController {
 		else{
 			CartItem ci = new CartItem(0,item,amount);
 	//		ht.saveItem(ci);
-			System.out.println(ci);
+	//		System.out.println(ci);
 			user.getCart().add(ci);
 			if(user.getFirstName() != null) {
 				ht.saveItem(ci);
@@ -166,19 +182,38 @@ public class ItemController {
 		model.addAttribute("user",user);
 		
 	}
+	
+	@RequestMapping(value = "/buy_now id = {index}")
+	public String butNow(@PathVariable("index") int index,@ModelAttribute("user") User user){
+		Item item = ht.getItem(index);
+		user.getCart().add(new CartItem(item,1));
+		return "redirect:/pre_check_out";
+	}
+	
 	@RequestMapping(value = "/pre_check_out")
-	public String preCheckOut() {
-		return "PreCheckOut";
+	public String preCheckOut(@ModelAttribute("user") User user) {
+		if(user.getFirstName() != null)
+			return "PreCheckOut";
+		else
+			return "Login_Register";
 	}
 	
 	@RequestMapping(value = "/check")
 	public String check(Model model,@ModelAttribute("user") User user) {
 		List<CartItem> cart = user.getCart();
-		model.addAttribute(cart);
+		System.out.println(cart.size());
+		model.addAttribute("cart",cart);
+		for(int i = 0;i<cart.size();i++) {
+			Item item = cart.get(i).getItem();
+			if(cart.get(i).getAmount()<=item.getStock()) {
+				item.setStock(item.getStock()-cart.get(i).getAmount());
+				ht.saveUpdateItem(item);
+			}			
+		}
 		List<CartItem> list = new ArrayList<>();
 		user.setCart(list);
 		ht2.update(user);
-		return "check";
+		return "Check";
 	}
 	
 	@RequestMapping(value = "/deleteItem id = {index}")
@@ -186,8 +221,11 @@ public class ItemController {
 	public void deleteItem(@PathVariable("index") int index,HttpServletRequest request,Model model) {
 		User user = (User) request.getSession().getAttribute("user");
 		user.getCart().remove(index);
-		ht2.update(user);
+		if(user.getFirstName() != null)
+			ht2.update(user);
 		model.addAttribute("user",user);
 	}
+	
+
 
 }

@@ -38,6 +38,16 @@
 			</c:forEach>
 			<br>
 			<br>
+			<h3><spring:message code="label.address"/>:</h3>
+			<div class = 'container'>
+					<div class = "col-md-4 col-offset-4">
+						<h4></h4>
+						<h4>${ user.getAddress().getAdd1() } ${ user.getAddress().getAdd2() } ${ user.getAddress().getCity() }
+						${ user.getAddress().getState() } ${ user.getAddress().getPost() } ${ user.getAddress().getCountry() }</h4>
+
+					</div>
+			</div>
+			<br>
 			<br>
 			</div>
 				<div class = "col-md-2">

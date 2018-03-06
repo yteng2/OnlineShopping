@@ -3,7 +3,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -11,17 +11,18 @@
 </head>
 <body>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
-<p>From Session : <%=((ArrayList)session.getAttribute("partResult")).size()%></p>
+<%-- <p>From Session : <%=((ArrayList)session.getAttribute("partResult")).size()%></p> --%>
 <div class = "container" >
+	<input type = 'hidden' value = 1>
 	<c:forEach var = "item" items = "${ partResult }" varStatus="loop">
 		<div class = 'row table table-hover'>
 			<div class="col-md-9">
 			
 				<a href = './item_big_id = ${item.getId()}'>
-					<div class="col-md-2">
+					<div class="col-md-3">
 						<img src="/OnlineShopping/image = ${item.getId()}" class="img-responsive"/>
 					</div>	
-					<div class="col-md-9" style="text-align: left">
+					<div class="col-md-8" style="text-align: left">
 						<h5>${ item.getName() }</h5>
 					</div>
 					<div class="col-md-1" style="text-align: center;">
@@ -32,15 +33,25 @@
 			</div>
 			<div class="row" style = "vertical-align:middle">
 				<div class = "col-md-3">
+					
+					<div>
+						<spring:message code="label.out_stock" var = "out_stock"/>
+						<h4 class = 'col-md-12' style = "text-center;color:red">${ item.getStock() eq 0 ? out_stock: ''}</h4>
+					</div>
+				
 					<div class="col-md-6 col-xs-6	" >
-						<a href = './addItem id = ${loop.index}, amount = 1' class = 'btn btn-success' ><spring:message code="label.add_to_cart"/></a>
+						<a href = './addItem id = ${loop.index}' class = "btn btn-success btn-block ${ item.getStock() eq 0 ? 'disabled': ''}" >
+						<spring:message code="label.add_to_cart"/></a>
 					</div>
 					<div class="col-md-6 col-xs-6" >
-						<button class = "btn btn-warning"><spring:message code="label.buy_it_now"/></button>
+						<a href = "./buy_now id = ${item.getId()}" class = "btn btn-warning btn-block ${ item.getStock() eq 0 ? 'disabled': ''}"><spring:message code="label.buy_it_now"/></a>
 					</div>
+
+				
 				</div>
 			</div>	
 		</div>
+		<hr>
 	</c:forEach>
 </div>
 <div  style="text-align: center">

@@ -13,15 +13,15 @@
 <fieldset>
 
 <!-- Form Name -->
-<legend><spring:message code="label.change_password" /></legend>
-
-<!-- Password input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="piCurrPass"><spring:message code="label.current_password" /></label>
-  <div class="col-md-4">
-    	<input id="piCurrPass" name="piCurrPass" type="password" placeholder="" class="form-control input-md" required>   
-  </div>
-</div>
+<legend style = "text-align: center;"><spring:message code="label.change_password" /></legend>
+<div class = "container">
+	<!-- Password input-->
+	<div class="form-group">
+	  <label class="col-md-4 control-label" for="piCurrPass"><spring:message code="label.current_password" /></label>
+	  <div class="col-md-4">
+	    	<input id="piCurrPass" name="piCurrPass" type="password" placeholder="" class="form-control input-md" required>   
+	  </div>
+	</div>
 
 <!-- Password input-->
 
@@ -52,7 +52,7 @@
 	    <a href = "./header" class="btn btn-success"><spring:message code="label.cancel" /></a>
 	  </div>
 	</div>
-
+</div>
 </fieldset>
 </form>
 </body>

@@ -51,4 +51,17 @@ public class ItemDaoHT implements ItemDao {
 		ht.saveOrUpdate(ci);
 	}
 
+	@Override
+	public ArrayList<Item> search() {
+		// TODO Auto-generated method stub
+		return (ArrayList<Item>) ht.find("from Item");
+	}
+
+	@Override
+	@Transactional
+	public void saveUpdateItem(Item i) {
+		ht.saveOrUpdate(i);
+		
+	}
+
 }

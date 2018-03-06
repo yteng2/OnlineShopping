@@ -22,7 +22,7 @@ public class FunctionController {
 		return "errorPage";
 	}*/
 	
-	/*@ExceptionHandler(value = Exception.class)*/
+//	@ExceptionHandler(value = Exception.class)
 	public ModelAndView displayError(Exception exception, Model model,HttpServletRequest request)throws Exception{
 		System.out.println("this is excetion handler method");
 		ModelAndView mv= new ModelAndView();

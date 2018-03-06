@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import shopping.bean.Address;
 import shopping.bean.CartItem;
 import shopping.bean.Item;
 import shopping.bean.User;
@@ -78,10 +81,7 @@ public class UserController {
 		return "redirect:/" +url;
 	}
 	
-	@RequestMapping(value = "/")
-	public String home() {
-		return "Home";
-	}
+
 	
 	@RequestMapping(value = "/check_email")
 	@ResponseBody
@@ -109,9 +109,14 @@ public class UserController {
 		return "header";
 	}
 	@PostMapping("/login")
-	String getHeader(HttpServletRequest request,@ModelAttribute("user") User user,Model model) {
+	String getHeader(HttpServletRequest request, @ModelAttribute("user") User user,
+			Model model /*BindingResult result*/) {
+//		System.out.println(result.hasErrors());
+//		if(result.hasErrors())
+//			return "Login_Register";
+//		System.out.println(request.getAttribute("user_email")+user.getPassword());
 		User realUser = ht.get(user.getEmail(), user.getPassword());
-		System.out.println(realUser);
+//		System.out.println(realUser);
 		if(realUser == null) {
 			model.addAttribute("failed","failed");
 			return "Login_Register";
@@ -120,6 +125,7 @@ public class UserController {
 //		realUser.getCart().addAll(user.getCart());  // update real user's cart, combine temp user's cart to real user
 		combine(realUser.getCart(),user.getCart());
 		saveCartEntity(realUser);    // save new CartItem to db;update old CartItem;
+//		ht.saveOrUpdate(realUser.getAddress());
 		ht.update(realUser);
 		model.addAttribute("user", realUser);
 		System.out.println("during loging"+request.getSession().getAttribute("user"));
@@ -127,12 +133,17 @@ public class UserController {
 		return "Home";
 	}
 	@PostMapping("/register") 
-	String postHeader(@ModelAttribute ("user") User user) {
+	String postHeader(@ModelAttribute ("user") @Valid User user,BindingResult result,Model model) {
 /*		user.setEmail(request.getParameter("email"));
 		user.setFirstName(request.getParameter("firstName"));
 		user.setLastName(request.getParameter("lastName"));
 		user.setPassword(request.getParameter("password"));
 		user.setPhone(request.getParameter("phone"));*/
+		if(result.hasErrors()) {
+			model.addAttribute("error","register");
+			model.addAttribute("user",user);
+			return "Login_Register";
+		}
 		System.out.println(user);
 		System.out.println(ht.save(user));
 		return "Home";
@@ -205,7 +216,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		//System.out.println(model.get("user"));
 		//request.getSession().invalidate();
-		return "Home";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/updatePassword")
@@ -215,12 +226,12 @@ public class UserController {
 		System.out.println(request.getParameter("piCurrPass"));
 		System.out.println(curPassword);
 		if(!request.getParameter("piCurrPass").equals(user.getPassword())) {
-			return "/";
+			return "changePassword";
 		}
 		else {
 			user.setPassword((String) request.getParameter("piNewPass"));
 			ht.update(user);
-			return "Home";
+			return "redirect:/";
 		}
 		
 	}
@@ -229,6 +240,30 @@ public class UserController {
 	public String preUpdatePassword() {
 		return "changePassword";
 	}
+	
+	@RequestMapping("/preUpdateAddress")
+	public String preUpdateAddress(Model model,@ModelAttribute("user") User user) {
+		if(user.getAddress() == null)
+			user.setAddress(new Address());
+		model.addAttribute("address",user.getAddress());
+		return "ChangeAddress";
+	}
+	
+	@RequestMapping("/updateAddress")
+	public String updateAddress(@ModelAttribute("address") @Valid Address address, BindingResult result, @ModelAttribute("user") User user,
+			Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("address",address);
+			System.out.println(address);
+			return "ChangeAddress";
+		}
+		user.setAddress(address);
+		model.addAttribute("user",user);
+		ht.saveOrUpdate(address);
+		ht.update(user);
+		return "Home";
+	}
+	
 	
 	
 	

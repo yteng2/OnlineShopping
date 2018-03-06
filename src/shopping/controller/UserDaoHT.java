@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import shopping.bean.Address;
 import shopping.bean.Item;
 import shopping.bean.User;
 
@@ -60,6 +61,13 @@ public class UserDaoHT implements UserDao {
 		String query = "from User where email = ?";
 		boolean result = ht.find(query, email).isEmpty();
 		return result;
+	}
+
+	@Override
+	@Transactional
+	public void saveOrUpdate(Address address) {
+		ht.saveOrUpdate(address);
+		
 	}
 
 
